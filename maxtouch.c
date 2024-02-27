@@ -5,7 +5,6 @@
 #define DIVIDE_UNSIGNED_ROUND(numerator, denominator) (((numerator) + ((denominator) / 2)) / (denominator))
 #define CPI_TO_SAMPLES(cpi, dist_in_mm) (DIVIDE_UNSIGNED_ROUND((cpi) * (dist_in_mm) * 10, 254))
 #define SAMPLES_TO_CPI(samples, dist_in_mm) (DIVIDE_UNSIGNED_ROUND((samples) * 254, (dist_in_mm) * 10))
-#define SWAP_BYTES(a) ((a << 8) | (a >> 8))
 
 // By default we assume all available X and Y pins are in use, but a designer
 // may decide to leave some pins unconnected, so the size can be overridden here.
@@ -81,7 +80,7 @@ void read_object_table(void)
         {
             // Read the object table entries one at a time, we could read the whole lot in one go.
             mxt_object_table_element object = {};
-            status = I2C_Read(MXT336UD_ADDRESS, SWAP_BYTES(object_table_element_address),
+            status = I2C_Read(MXT336UD_ADDRESS, object_table_element_address,
                               (uint8_t *)&object, sizeof(mxt_object_table_element));
             if (status == OK)
             {
